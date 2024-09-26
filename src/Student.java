@@ -29,8 +29,11 @@ public class Student {
     private int score2; // Score for Test 2
     private int score3; // Score for Test 3
     private double percentage; // Percentage score
+    private int hours;
+    private float GPA;
+    private float newGPA;
 
-    public Student(String id, String name, int score1, int score2, int score3) {
+    public Student(String id, String name, int score1, int score2, int score3, int hours, float GPA) {
 
         this.id = id;
         this.name = name;
@@ -38,7 +41,14 @@ public class Student {
         this.score2 = score2;
         this.score3 = score3;
         calculatePercentage();
+        this.hours = hours;
+        this.GPA = GPA;
+        this.newGPA = calculateNewGPA();
+
     }
+
+
+
 
     private void calculatePercentage() {
         this.percentage = round((score1 + score2 + score3) / 3.0); // Average of 3 test scores
@@ -48,10 +58,31 @@ public class Student {
         return percentage;
     }
 
+    public float calculateNewGPA() {
+        int currentHours = 2;
+        return (((GPA * hours) + (currentHours * newGPA)) / (hours + currentHours));
+    }
+
+    private String getLetterGrade() {
+        if (GPA >= 4.0) return "A";
+        else if (GPA >= 3.0) return "B";
+        else if (GPA >= 2.0) return "C";
+        else if (GPA >= 1.0) return "D";
+        else return "F"; // Simplified logic
+    }
+
+    public String getYear() {
+        if (hours >= 1 && hours <= 30) return "FR"; // Freshman
+        else if (hours >= 31 && hours <= 60) return "SO"; // Sophomore
+        else if (hours >= 61 && hours <= 90) return "JR"; // Junior
+        else return "SR"; // Senior
+    }
+
 
     public String toString() {
-        return String.format("ID: %s, Name: %s, Scores: %d, %d, %d, Percentage: %f",
-                id, name, score1, score2, score3, percentage);
+        String letterGrade = getLetterGrade();
+        return String.format("ID: %s, Name: %s, Scores: %d, %d, %d, Percentage: %f, Hours: %d, GPA: %.2f, New GPA: %.2f, Letter Grade: %s Year: %s",
+                id, name, score1, score2, score3, percentage, hours, GPA, newGPA, letterGrade, getYear());
     }
 
 // now we create our ArrayList, so we can add the functions of adding, removing and sorting the students
@@ -80,7 +111,7 @@ public class Student {
             } //end of for
         }
     }
-    //This function retrieves the student ID so it can be used by the removeStudent function
+    //This function retrieves the student ID, so it can be used by the removeStudent function
     private Object getId() {
         return id;
     }
@@ -100,9 +131,11 @@ public class Student {
                 int score1 = Integer.parseInt(parts[2].trim());
                 int score2 = Integer.parseInt(parts[3].trim());
                 int score3 = Integer.parseInt(parts[4].trim());
+                int hours = Integer.parseInt(parts[5].trim());
+                float GPA = Float.parseFloat(parts[6].trim());
 
 
-                Student student = new Student(id, name,score1, score2, score3);
+                Student student = new Student(id, name,score1, score2, score3, hours, GPA);
                 manager.addStudent(student);
             } // end of while
 
@@ -123,9 +156,9 @@ public class Student {
         manager.printStudents();
 
         // This part of the program allows us to add new students with their IDs, grades and names and put them into the ArrayList
-        manager.addStudent(new Student("67T4", "Clouse B ",80,75, 98));
-        manager.addStudent(new Student("S002", "Garrison J", 75, 78, 72));
-        manager.addStudent(new Student("S003", "Singer A", 85, 95, 99));
+        manager.addStudent(new Student("67T4", "Clouse B ",80,75, 98, 102, 3.65F));
+        manager.addStudent(new Student("S002", "Garrison J", 75, 78, 72,39, 1.85F));
+        manager.addStudent(new Student("S003", "Singer A", 85, 95, 99, 130, 3.87F));
 
         // Sort students by percentage from highest to lowest scores
         manager.sortLarge();
