@@ -57,12 +57,12 @@ public class Student {
     public double getPercentage() {
         return percentage;
     }
-
+// this part of the program calculates the newGPA according to the equation given to us for part 2
     public float calculateNewGPA() {
         int currentHours = 2;
         return (((GPA * hours) + (currentHours * newGPA)) / (hours + currentHours));
     }
-
+//this part of the program enables the GPA to be used to calculate the students' letter grades and display them
     private String getLetterGrade() {
         if (GPA >= 4.0) return "A";
         else if (GPA >= 3.0) return "B";
@@ -70,7 +70,7 @@ public class Student {
         else if (GPA >= 1.0) return "D";
         else return "F"; // Simplified logic
     }
-
+    // this part of the program uses the total credit hours the students each have to rank them by their year in college
     public String getYear() {
         if (hours >= 1 && hours <= 30) return "FR"; // Freshman
         else if (hours >= 31 && hours <= 60) return "SO"; // Sophomore
@@ -86,14 +86,15 @@ public class Student {
     }
 
 // now we create our ArrayList, so we can add the functions of adding, removing and sorting the students
-    public static class StudentManager {
-        private ArrayList<Student> Academic_Class;
+    //the StudentManager is now utilizing Generic Objects
+    public static class StudentManager <T extends Student> {
+        private ArrayList<T> Academic_Class;
 
         public StudentManager() {
             Academic_Class = new ArrayList<>();
         }
         //This function allows us to add the students later to the ArrayList
-        public void addStudent(Student student) {
+        public void addStudent(T student) {
             Academic_Class.add(student);
         }
         //This function allows us to remove the students from the ArrayList via their student IDs
@@ -106,13 +107,13 @@ public class Student {
         }
         //This functions prints out the list of the students from the input file after we complete the other functions beforehand
         public void printStudents() {
-            for (Student student : Academic_Class) {
+            for (T student : Academic_Class) {
                 System.out.println(student);
             } //end of for
         }
     }
     //This function retrieves the student ID, so it can be used by the removeStudent function
-    private Object getId() {
+    public Object getId() {
         return id;
     }
 
